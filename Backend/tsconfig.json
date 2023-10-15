@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // Versão do ECMAScript alvo (pode ser ajustada conforme necessário)
+    "module": "commonjs", // Sistema de módulos (para Node.js, use "commonjs")
+    "lib": ["ES2021"],
+    "outDir": "./dist", // Diretório de saída para os arquivos compilados
+    "rootDir": "./src", // Diretório raiz do código-fonte TypeScript
+    "strict": true, // Habilita as configurações rigorosas do TypeScript
+    "esModuleInterop": true, // Permite interoperabilidade com módulos ES6
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true // Garante que os nomes de arquivos tenham o mesmo estilo de maiúsculas/minúsculas
+  },
+  "include": ["src/**/*.ts"], // Padrão para arquivos TypeScript a serem compilados
+  "exclude": ["node_modules"] // Diretórios ou arquivos a serem excluídos da compilação
+}
