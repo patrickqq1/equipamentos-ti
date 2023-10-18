@@ -1,61 +1,35 @@
 import { Request, Response } from "express";
 import { Knex } from "../../database";
 
-const getMovHistory = async (request: Request, response: Response) => {
+const getMovItens = async (request: Request, response: Response) => {
   try {
-    const data = await Knex("equipment_movements as em")
-      .select(
-        "em.id",
-        "em.equipment_id as equipment_name",
-        "em.movement_date",
-        "em.movement_type",
-        "e.name",
-        "u_placed.username as placed_by_name",
-        "u_taken.username as taken_by_name"
-      )
-      .join("equipments as e", "e.id", "em.equipment_id")
-      .join("users as u_placed", "u_placed.id", "em.user_placed_id")
-      .join("users as u_taken", "u_taken.id", "em.user_taken_id");
-    const lastMov = await Knex.raw(`SELECT * FROM equipment_movements em where id in (SELECT max(id) FROM equipment_movements em group by equipment_id )`)
+    const data = await Knex("equipment_movements").select("*");
     return response.status(200).json({
+      message: "Itens obtidos com sucesso!",
       data,
-      lastMov
     });
   } catch (error) {
-    console.error(error);
-    return response.status(500).json({
-      message: "erro",
+    return response.json(500).json({
+      message: "Erro ao obter itens!",
     });
   }
 };
-
-const getMovHistoryById = async (request: Request, response: Response) => {
+const getMovHistoryByid = async (request: Request, response: Response) => {
   const { id } = request.params;
   try {
-    const data = await Knex("equipment_movements as em")
-      .select(
-        "em.id",
-        "em.equipment_id as equipment_name",
-        "em.movement_date",
-        "em.movement_type",
-        "e.name",
-        "u_placed.username as placed_by_name",
-        "u_taken.username as taken_by_name"
-      )
-      .join("equipments as e", "e.id", "em.equipment_id")
-      .join("users as u_placed", "u_placed.id", "em.user_placed_id")
-      .join("users as u_taken", "u_taken.id", "em.user_taken_id")
-      .where("e.id", "=", id)
-
-      return response.status(200).json({
-        data
-      })
+    const data = await Knex("equipment_movements")
+      .select("equipment_movements.*", "users.username")
+      .join("users", "equipment_movements.user_id", "users.id")
+      .where("equipment_id", "=", id);
+    return response.status(200).json({
+      message: "Itens obtidos com sucesso!",
+      data,
+    });
   } catch (error) {
-    console.error(error);
-    return response.status(500).json({
-        message:"Erro ao buscar o histórico de movimentações do equipamento."
-    })
+    return response.json(500).json({
+      message: "Erro ao obter itens!",
+    });
   }
 };
 
-export { getMovHistory, getMovHistoryById };
+export { getMovItens, getMovHistoryByid };

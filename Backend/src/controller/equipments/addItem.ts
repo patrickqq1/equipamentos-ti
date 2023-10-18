@@ -3,7 +3,7 @@ import { Knex } from "../../database";
 
 const addItem = async (request: Request, response: Response) => {
   const idUser = request.id;
-  const { name, acquisition_date, description, value, status } = request.body;
+  const { name, acquisition_date, quantity_total, quantity_in_stock, value } = request.body;
   try {
     const verify = await Knex("equipments")
       .select("*")
@@ -16,8 +16,8 @@ const addItem = async (request: Request, response: Response) => {
     await Knex("equipments").insert({
       name,
       acquisition_date,
-      description,
-      status,
+      quantity_total,
+      quantity_in_stock,
       value,
       added_by: idUser
     });

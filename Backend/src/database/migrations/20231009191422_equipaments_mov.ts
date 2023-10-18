@@ -4,14 +4,14 @@ export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable('equipment_movements', table => {
         table.increments('id').primary();
         table.integer('equipment_id').unsigned();
-        table.integer('user_taken_id').unsigned();
-        table.integer('user_placed_id').unsigned();
+        table.string('reason', 255).notNullable()
         table.timestamp('movement_date').defaultTo(knex.fn.now());
-        table.enum('movement_type', ['Retirada', 'Devolução', 'Manutenção']).notNullable();
-
+        table.enum('movement_type', ['Retirada', 'Acrescimo']).notNullable();
+        table.decimal('quantity_out', 15, 2).notNullable().defaultTo(0); // Nova coluna: Quantidade que saiu
+        table.decimal('quantity_in', 15, 2).notNullable().defaultTo(0);  // Nova coluna: Quantidade que entrou
+        table.integer("user_id").unsigned()
         table.foreign('equipment_id').references('id').inTable('equipments');
-        table.foreign('user_taken_id').references('id').inTable('users');
-        table.foreign('user_placed_id').references('id').inTable('users');
+        table.foreign('user_id').references('id').inTable('users');
     });
 }
 

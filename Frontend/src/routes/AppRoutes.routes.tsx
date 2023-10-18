@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "../pages/homepage";
 import LoginPage from "../pages/loginpage";
 import { useAuth } from "../services/context/AuthContext";
+import Equipaments from "../pages/equipamentsAllMovs";
 
 const AdminRoutes: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const { isAuth, role } = useAuth();
@@ -48,6 +49,14 @@ const RoutesApp: React.FC = () => {
           <AuthRoutes>
             <HomePage />
           </AuthRoutes>
+        }
+      />
+      <Route
+        path="/equipments"
+        element={
+          <AdminRoutes>
+            <Equipaments />
+          </AdminRoutes>
         }
       />
       <Route
